@@ -1,4 +1,4 @@
-package agent; //dcop-khoi
+package agent; //dcop
 
 import java.io.BufferedReader;
 import java.io.FileReader;
