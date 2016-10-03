@@ -115,7 +115,7 @@ public class DPOP_UTIL extends OneShotBehaviour implements MESSAGE_TYPE {
 			}
 		}
 		else if (agent.algorithm == DCOP.BACKWARD) {
-			//solve from stableTimeStep -> 0
+			//solve from h -> 0
 			//ERROR with solving DCOP more than necessary steps not happen,
 			//since number of behaviors is set correctly
 			agent.addExpectedRandomTableToList(agent.h - agent.getCurrentTS());

@@ -22,7 +22,9 @@ public class Utilities {
 	
 	//before local search iteration
 	public static void writeUtil_Time_BeforeLS(DCOP agent) {
-		String newFileName = "SDPOP" + "_d=" + agent.noAgent + "_sw=" + (int) agent.switchingCost + ".txt";  
+		String newFileName = "SDPOP" + "_d=" + agent.noAgent
+									+ "_sw=" + (int) agent.switchingCost
+									+ "_h=" + agent.h + ".txt";  
 		
 		if (agent.instanceD == 0) {
 			headerLine += "\t" + "Switch";

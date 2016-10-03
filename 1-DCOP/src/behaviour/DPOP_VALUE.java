@@ -159,10 +159,6 @@ public class DPOP_VALUE extends OneShotBehaviour implements MESSAGE_TYPE {
 			}
 		}
 		
-		if (agent.algorithm == DCOP.FORWARD)
-			writeChosenValueToFileFW();
-		else
-			writeChosenValueToFile_Not_FW();	
 		
 		agent.incrementCurrentTS();
 	}

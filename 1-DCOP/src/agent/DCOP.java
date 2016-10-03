@@ -189,7 +189,12 @@ public class DCOP extends Agent implements DCOP_INFO {
 				constraintTableAtEachTSMap.put(tS, new ArrayList<Table>());
 			}
 		
-		varDecisionFileName = DCOP.algTypes[algorithm] + "_d=" + noAgent + "_sw=" + (int) switchingCost + ".txt";
+		varDecisionFileName = DCOP.algTypes[algorithm] + "_d=" + noAgent
+													+ "_sw=" + (int) switchingCost
+													+ "_h=" + h + ".txt";  
+//		String newFileName = "SDPOP" + "_d=" + agent.noAgent
+//				+ "_sw=" + (int) agent.switchingCost
+//				+ "_h=" + agent.h + ".txt";  
 	}
 	
     protected void setup() {
