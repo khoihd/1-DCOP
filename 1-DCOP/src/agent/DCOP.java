@@ -169,7 +169,7 @@ public class DCOP extends Agent implements DCOP_INFO {
 		currentTS = 0;
 	}
 	
-	//test
+	//done with LS-RAND
 	public void readArguments() {
     	Object[] args = getArguments();
 		//parameters for running experiments
