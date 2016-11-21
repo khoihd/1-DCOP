@@ -14,9 +14,7 @@ import java.text.DecimalFormat;
 
 import agent.DCOP;
 
-public class Utilities {
-	//TODO: Utility are calculated as sum, and write to file as divided by (h+1) DCOPs
-	
+public class Utilities {	
 	public static String headerLine = "InstanceID" + "\t" + "Alg" + "\t" + "Decision"
 									+ "\t" + "Time" + "\t" + "Utility";
 	

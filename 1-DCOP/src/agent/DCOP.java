@@ -19,6 +19,7 @@ import behaviour.LS_RECEIVE_SEND_LS_UTIL;
 import behaviour.MESSAGE_TYPE;
 import behaviour.INIT_PROPAGATE_DPOP_VALUE;
 import behaviour.PSEUDOTREE_GENERATION;
+import behaviour.RAND_PICK_VALUE;
 import behaviour.INIT_RECEIVE_DPOP_VALUE;
 import behaviour.RECEIVE_IMPROVE;
 import behaviour.INIT_RECEIVE_SEND_LS_UTIL;
@@ -182,9 +183,11 @@ public class DCOP extends Agent implements DCOP_INFO {
 		scType = DCOP.constant;
 		
 		//can be done after getting the algorithm
-		if (algorithm == C_DPOP)
-			constraintTableAtEachTSMap.put(0, new ArrayList<Table>());
+		if (algorithm == C_DPOP) {
+//			constraintTableAtEachTSMap.put(0, new ArrayList<Table>());
+		}
 		else
+			//SDPOP, LS_SDPOP, FORWARD, BACKWARD, HYBRID, REACTIVE, LS_RAND
 			for (int tS=0; tS<=h; tS++) {
 				constraintTableAtEachTSMap.put(tS, new ArrayList<Table>());
 			}
@@ -217,13 +220,18 @@ public class DCOP extends Agent implements DCOP_INFO {
 
 		probabilityAtEachTimeStepMap.put(idStr, new double[h+1][domainSize]);
 		
+		//create actual distribution based on previous observation
+		//REACT sample random values in DPOP_UTIL step
+		//HYRBID sample random values on the way
 		if (algorithm == HYBRID) {
 			for (int i=0; i<=h; i++) {
 				addPickedRandomMap(i, simulateRandom(i));
 				createProbabilityWithObservation(i);
 			}
 		}
-		else if (algorithm == FORWARD || algorithm == LS_SDPOP || algorithm == BACKWARD) {
+		//create distribution at each time step, and stationary distribution at h
+		else if (algorithm == FORWARD || algorithm == BACKWARD || algorithm == LS_SDPOP ||
+			     algorithm == LS_RAND ) {
 			//create actual distribution from 0 -> h-1
 			for (int i=0; i<=h-1; i++) {
 				createProbabilityAt(i);
@@ -231,7 +239,8 @@ public class DCOP extends Agent implements DCOP_INFO {
 			//create stable distribution for time step h
 			createStableProbabilityForLastTimeStep();
 		}
-		else {
+		//PD-DCOP algorithms, no need to consider stationary distribution
+		else if (algorithm != REACT) {
 			for (int i=0; i<=h; i++) {
 				createProbabilityAt(i);
 			}
@@ -242,10 +251,10 @@ public class DCOP extends Agent implements DCOP_INFO {
 		//different from different algorithms
 		//initialize the tableMap		
 		
-		if (algorithm == LS_RAND || algorithm == C_DPOP) {
-			addExpectedRandomTableToListAllTS();
-			addConstraintTableToListAllTS();
-		}		
+//		if (algorithm == C_DPOP) {
+//			addExpectedRandomTableToListAllTS();
+//			addConstraintTableToListAllTS();
+//		}		
 
 		startTime = System.currentTimeMillis();
 		bean = ManagementFactory.getThreadMXBean();
@@ -273,9 +282,9 @@ public class DCOP extends Agent implements DCOP_INFO {
 		
 		/*** LOCAL SEARCH ***/
 		//pick values randomly
-//		if (algorithm == LS_RAND) {
-//			mainSequentialBehaviourList.addSubBehaviour(new RAND_PICK_VALUE());
-//		}
+		if (algorithm == LS_RAND) {
+			mainSequentialBehaviourList.addSubBehaviour(new RAND_PICK_VALUE(this));
+		}
 		
 		//sending and receiving values from neighbors
 		if (algorithm == LS_SDPOP || algorithm == LS_RAND) {
