@@ -1840,9 +1840,9 @@ public class DCOP extends Agent implements DCOP_INFO {
 		case CONSTANT:
 			return equal ? 0 : switchingCost;
 		case LINEAR:
-			return equal ? 0 : difference;
+			return equal ? 0 : difference * switchingCost;
 		case EXP_2:
-			return equal ? 0 : Math.pow(2, difference);
+			return equal ? 0 : Math.pow(2, switchingCost);
 		}
 		
 		return -Double.MAX_VALUE;
