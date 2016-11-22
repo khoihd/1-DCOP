@@ -443,7 +443,8 @@ public class DPOP_UTIL extends OneShotBehaviour implements MESSAGE_TYPE {
 			//consider case with h >= 1, so that there is switching cost
 			if (valueList.length != 1) {
 				for (int i=1; i<valueList.length; i++) {
-					sC += swCost(valueList[i], valueList[i-1], agent.scType);
+//					sC += swCost(valueList[i], valueList[i-1], agent.scType);
+					sC += agent.sc_func(valueList[i], valueList[i-1]);
 				}
 				//compare value at allowedTimeStep with valueAtStableState
 //				if (valueList[valueList.length-1].equals(valueAtStableState))
@@ -476,7 +477,8 @@ public class DPOP_UTIL extends OneShotBehaviour implements MESSAGE_TYPE {
 		for (String value:agent.getDecisionVariableDomainMap().get(agent.getIdStr())) {
 			ArrayList<String> row = new ArrayList<String>();
 			row.add(value);
-			switchingCostTable.addRow(new Row(row, -swCost(value, valueToBeCompared, agent.scType)));
+//			switchingCostTable.addRow(new Row(row, -swCost(value, valueToBeCompared, agent.scType)));
+			switchingCostTable.addRow(new Row(row, -agent.sc_func(value, valueToBeCompared)));
 		}
 //		switchingCostTable.printDecVar();
 		agent.getCurrentTableListDPOP().add(switchingCostTable);
@@ -492,8 +494,10 @@ public class DPOP_UTIL extends OneShotBehaviour implements MESSAGE_TYPE {
 		for (String value:agent.getDecisionVariableDomainMap().get(agent.getIdStr())) {
 			ArrayList<String> row = new ArrayList<String>();
 			row.add(value);
-			switchingCostTable.addRow(new Row(row, -swCost(value, valueToBeCompared_before, agent.scType)
-												   -swCost(value, valueToBeCompared_after, agent.scType)));
+//			switchingCostTable.addRow(new Row(row, -swCost(value, valueToBeCompared_before, agent.scType)
+//												   -swCost(value, valueToBeCompared_after, agent.scType)));
+			switchingCostTable.addRow(new Row(row, -agent.sc_func(value, valueToBeCompared_before)
+												   -agent.sc_func(value, valueToBeCompared_after)));
 		}
 		agent.getCurrentTableListDPOP().add(switchingCostTable);
 	}
@@ -770,16 +774,16 @@ public class DPOP_UTIL extends OneShotBehaviour implements MESSAGE_TYPE {
 	    }
 	}
 	
-	public double swCost(String curValue, String preValue, int typeOfFunction) {
-		if (typeOfFunction == DCOP.constant)
-			return curValue.equals(preValue) ? 0 : agent.switchingCost;
-		else if (typeOfFunction == DCOP.linear)
-			return curValue.equals(preValue) ? 0 : agent.switchingCost * absoluteDistance(curValue, preValue);
-		else if (typeOfFunction == DCOP.exponential)
-			return curValue.equals(preValue) ? 0 : Math.pow(agent.scExponentialBase, absoluteDistance(curValue, preValue));
-		else
-			return -Double.MAX_VALUE;
-	}
+//	public double swCost(String curValue, String preValue, int typeOfFunction) {
+//		if (typeOfFunction == DCOP.CONSTANT)
+//			return curValue.equals(preValue) ? 0 : agent.switchingCost;
+//		else if (typeOfFunction == DCOP.LINEAR)
+//			return curValue.equals(preValue) ? 0 : agent.switchingCost * absoluteDistance(curValue, preValue);
+//		else if (typeOfFunction == DCOP.EXP_2)
+//			return curValue.equals(preValue) ? 0 : Math.pow(agent.scExponentialBase, absoluteDistance(curValue, preValue));
+//		else
+//			return -Double.MAX_VALUE;
+//	}
 	
 	public double absoluteDistance(String a, String b) {
 		return Math.abs(Double.parseDouble(a) - Double.parseDouble(b));

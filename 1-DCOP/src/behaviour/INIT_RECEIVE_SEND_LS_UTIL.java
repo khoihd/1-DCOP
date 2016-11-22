@@ -58,7 +58,11 @@ public class INIT_RECEIVE_SEND_LS_UTIL extends OneShotBehaviour implements MESSA
 				agent.setOldLSRunningTime(agent.getEndTime() - agent.getStartTime());
 			}
 			agent.setOldLSUtility(agent.getUtilityAndCost());
-			Utilities.writeUtil_Time_BeforeLS(agent);
+			if (agent.algorithm == DCOP.LS_SDPOP)
+				Utilities.writeUtil_Time_BeforeLS(agent);
+			else if (agent.algorithm == DCOP.LS_RAND)
+				Utilities.writeUtil_Time_BeforeLS_Rand(agent);
+			
 			System.out.println("RUNNING TIME: " + (agent.getEndTime() - agent.getStartTime()) + "ms");
 			System.out.println("SIMULATED TIME: " + agent.getSimulatedTime()/1000000 + "ms");
 			

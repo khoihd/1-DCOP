@@ -181,7 +181,7 @@ public class DCOP extends Agent implements DCOP_INFO {
 		instanceD = Integer.valueOf(a[0]);
 		noAgent = Integer.valueOf(a[1]);
 		idStr = getLocalName();	
-		scType = DCOP.constant;
+		scType = DCOP.CONSTANT;
 		
 		//can be done after getting the algorithm
 		if (algorithm == C_DPOP) {
@@ -423,8 +423,9 @@ public class DCOP extends Agent implements DCOP_INFO {
 		for (int i=1; i<valuesOverTS.size(); i++) {
 //			sumCost += valuesOverTS.get(i).equals(valuesOverTS.get(i-1)) ? 0
 //										: switchingCost * Math.pow(discountFactor, i-1);
-			sumCost += valuesOverTS.get(i).equals(valuesOverTS.get(i-1)) ? 0
-					: switchingCost;
+//			sumCost += valuesOverTS.get(i).equals(valuesOverTS.get(i-1)) ? 0
+//					: switchingCost;
+			sumCost += sc_func(valuesOverTS.get(i), valuesOverTS.get(i-1));
 		}
 		return sumUtility - sumCost;
 	}
@@ -435,15 +436,18 @@ public class DCOP extends Agent implements DCOP_INFO {
 			double sc = 0;
 			double utility = 0;
 			if (ts==0)
-				sc = (valuesOverTS.get(0).equals(valuesOverTS.get(1))
-						? 0 : switchingCost);
+//				sc = (valuesOverTS.get(0).equals(valuesOverTS.get(1))
+//						? 0 : switchingCost);
+				sc = sc_func(valuesOverTS.get(0), valuesOverTS.get(1));
 			else if (ts==h) 
-				sc = (valuesOverTS.get(h).equals(valuesOverTS.get(h-1))
-				? 0 : switchingCost);
+//				sc = (valuesOverTS.get(h).equals(valuesOverTS.get(h-1))
+//				? 0 : switchingCost);
+				sc = sc_func(valuesOverTS.get(h), valuesOverTS.get(h-1));
 			else
-				sc = (valuesOverTS.get(ts-1).equals(valuesOverTS.get(ts)) ? 0 : switchingCost)
-				   + (valuesOverTS.get(ts).equals(valuesOverTS.get(ts+1)) ? 0 : switchingCost);
-			
+//				sc = (valuesOverTS.get(ts-1).equals(valuesOverTS.get(ts)) ? 0 : switchingCost)
+//				   + (valuesOverTS.get(ts).equals(valuesOverTS.get(ts+1)) ? 0 : switchingCost);
+				sc = sc_func(valuesOverTS.get(ts-1), valuesOverTS.get(ts))
+				   + sc_func(valuesOverTS.get(ts), valuesOverTS.get(ts+1));
 			//from each utility constraint with neighbors at a timeStep
 			//get names -> get values from agent_view
 			//from neighbors' values, current value -> get utility from constraint table
@@ -475,16 +479,20 @@ public class DCOP extends Agent implements DCOP_INFO {
 			double sc = 0;
 			double utility = 0;
 			if (ts==0)
-				sc = (valuesOverTS.get(0).equals(valuesOverTS.get(1))
-						? 0 : switchingCost);
+//				sc = (valuesOverTS.get(0).equals(valuesOverTS.get(1))
+//						? 0 : switchingCost);
+				sc = sc_func(valuesOverTS.get(0), valuesOverTS.get(1));
 			else if (ts==h) 
-				sc = (valuesOverTS.get(h).equals(valuesOverTS.get(h-1))
-						? 0 : switchingCost);
+//				sc = (valuesOverTS.get(h).equals(valuesOverTS.get(h-1))
+//						? 0 : switchingCost);
+				sc = sc_func(valuesOverTS.get(h), valuesOverTS.get(h-1));
 			else
-				sc = (valuesOverTS.get(ts-1).equals(valuesOverTS.get(ts))
-						? 0 : switchingCost)
-				   + (valuesOverTS.get(ts).equals(valuesOverTS.get(ts+1))
-						? 0 : switchingCost);
+//				sc = (valuesOverTS.get(ts-1).equals(valuesOverTS.get(ts))
+//						? 0 : switchingCost)
+//				   + (valuesOverTS.get(ts).equals(valuesOverTS.get(ts+1))
+//						? 0 : switchingCost);
+				sc = sc_func(valuesOverTS.get(ts-1), valuesOverTS.get(ts))
+				   + sc_func(valuesOverTS.get(ts), valuesOverTS.get(ts+1));
 			
 			//from each utility constraint with neighbors at a timeStep
 			//get names -> get values from agent_view
@@ -1377,8 +1385,10 @@ public class DCOP extends Agent implements DCOP_INFO {
 		double sC = 0;
 		if (getValueAtEachTSMap().size() == 1) return 0;
 		for (int i=1; i<getValueAtEachTSMap().size(); i++) {
-			if (getValueAtEachTSMap().get(i).equals(getValueAtEachTSMap().get(i-1)) == false)
-				sC += switchingCost;
+//			if (getValueAtEachTSMap().get(i).equals(getValueAtEachTSMap().get(i-1)) == false)
+//				sC += switchingCost;
+			
+			sC += sc_func(getValueAtEachTSMap().get(i), getValueAtEachTSMap().get(i-1));
 		}
 		return sC;
 	}
@@ -1744,6 +1754,14 @@ public class DCOP extends Agent implements DCOP_INFO {
 		this.currentUTILstartTime = currentUTILstartTime;
 	}
 	
+	public String getLastLine() {
+		return lastLine;
+	}
+
+	public void setLastLine(String lastLine) {
+		this.lastLine = lastLine;
+	}
+	
 	public double[] toArray(ArrayList<Double> arrayList) {
 		int arrSize = arrayList.size();
 		double[] convertedArray = new double[arrSize];
@@ -1813,13 +1831,21 @@ public class DCOP extends Agent implements DCOP_INFO {
 		
 		return resultVector;
 	}
-
-	public String getLastLine() {
-		return lastLine;
-	}
-
-	public void setLastLine(String lastLine) {
-		this.lastLine = lastLine;
-	}
 	
+	public double sc_func(String oldValue, String newValue) {
+		boolean equal = oldValue.equals(newValue); 
+		double difference = Math.abs(Double.parseDouble(oldValue) - Double.parseDouble(newValue));
+		
+		switch (scType) {
+		case CONSTANT:
+			return equal ? 0 : switchingCost;
+		case LINEAR:
+			return equal ? 0 : difference;
+		case EXP_2:
+			return equal ? 0 : Math.pow(2, difference);
+		}
+		
+		return -Double.MAX_VALUE;
+			
+	}
 }	

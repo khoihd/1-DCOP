@@ -71,7 +71,7 @@ public class LS_RECEIVE_SEND_LS_UTIL extends Behaviour implements MESSAGE_TYPE {
 					String.valueOf(agent.getUtilityAndCost()), LS_UTIL, agent.getSimulatedTime());
 		else {
 			agent.setEndTime(System.currentTimeMillis());
-			Utilities.writeUtil_Time_LSSDPOP(agent);
+			Utilities.writeUtil_Time_LS(agent);
 			agent.setOldLSRunningTime(agent.getEndTime() - agent.getStartTime());
 			agent.setOldLSUtility(agent.getUtilityAndCost());
 			

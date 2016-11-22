@@ -42,6 +42,29 @@ public class Utilities {
 		writeToFile(line, newFileName);
 	}
 	
+	public static void writeUtil_Time_BeforeLS_Rand(DCOP agent) {
+		String newFileName = "SDPOP" + "_d=" + agent.noAgent
+				+ "_sw=" + (int) agent.switchingCost
+				+ "_h=" + agent.h + ".txt";  
+
+		if (agent.instanceD == 0) {
+			headerLine += "\t" + "Switch";
+			writeHeaderLineToFile(newFileName);
+		}
+
+		// startWriting file
+		String alg = "LS_RAND";
+
+		DecimalFormat df = new DecimalFormat("##.##");
+		df.setRoundingMode(RoundingMode.DOWN);
+		String line = null;
+
+		line = "\n" + agent.instanceD + "\t" + alg + "\t" + agent.noAgent + "\t" +
+				agent.getOldLSRunningTime() + "\t" + df.format(agent.getUtilityAndCost()) + "\t" + "*";
+
+		writeToFile(line, newFileName);
+	}
+	
 	public static void writeUtil_Time_FW_BW(DCOP agent) {
 		if (agent.instanceD == 0)
 			writeHeaderLineToFile(agent.varDecisionFileName);
@@ -60,7 +83,7 @@ public class Utilities {
 		writeToFile(line, agent.varDecisionFileName);
 	}
 
-	public static void writeUtil_Time_LSSDPOP(DCOP agent) {
+	public static void writeUtil_Time_LS(DCOP agent) {
 		if (agent.getUtilityAndCost() == agent.getOldLSUtility() && agent.isStop() == false) {
 			if (agent.instanceD == 0) {
 				writeHeaderLineToFile(agent.varDecisionFileName);
@@ -81,6 +104,7 @@ public class Utilities {
 			writeToFile(line, agent.varDecisionFileName);
 		}
 	}
+	
 	
 	public static void writeHeaderLineToFile(String outputFile) {
 		byte data[] = headerLine.getBytes();

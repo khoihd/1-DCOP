@@ -26,9 +26,9 @@ public interface DCOP_INFO {
     public static final String switchYes = "yes";
     public static final String switchNo = "no";
     
-    public static final int constant = 0;
-    public static final int linear = 1;
-    public static final int exponential = 2;
+    public static final int CONSTANT = 0;
+    public static final int LINEAR = 1;
+    public static final int EXP_2 = 2;
     
     public static final int stableTimeStep = 40;
     public static final int domainSize = 3;

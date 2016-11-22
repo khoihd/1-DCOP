@@ -207,7 +207,7 @@ public class DPOP_VALUE extends OneShotBehaviour implements MESSAGE_TYPE {
 		
 		String line = "";
 		String alg = DCOP.algTypes[agent.algorithm];
-		String scType = (agent.scType == DCOP.constant) ? "constant" : "linear";
+		String scType = (agent.scType == DCOP.CONSTANT) ? "constant" : "linear";
 		if (agent.getCurrentTS() == 0)
 			line = line + alg + "\t" + agent.inputFileName + "\t" + "sCost=" + agent.switchingCost
 			+ "\t" + "scType=" + scType + "\n";
@@ -251,7 +251,7 @@ public class DPOP_VALUE extends OneShotBehaviour implements MESSAGE_TYPE {
 		
 		String line = "";
 		String alg = DCOP.algTypes[agent.algorithm];
-		String scType = (agent.scType == DCOP.constant) ? "constant" : "linear";
+		String scType = (agent.scType == DCOP.CONSTANT) ? "constant" : "linear";
 		if (agent.getCurrentTS() == 0)
 			line = line + alg + "\t" + agent.inputFileName + "\t" + "sCost=" + agent.switchingCost
 			+ "\t" + "scType=" + scType + "\n";
