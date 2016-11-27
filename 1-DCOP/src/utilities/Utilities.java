@@ -43,7 +43,7 @@ public class Utilities {
 	}
 	
 	public static void writeUtil_Time_BeforeLS_Rand(DCOP agent) {
-		String newFileName = "SDPOP" + "_d=" + agent.noAgent
+		String newFileName = "FIRST_RAND" + "_d=" + agent.noAgent
 				+ "_sw=" + (int) agent.switchingCost
 				+ "_h=" + agent.h + ".txt";  
 

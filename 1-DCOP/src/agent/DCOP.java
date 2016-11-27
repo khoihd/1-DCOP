@@ -250,7 +250,13 @@ public class DCOP extends Agent implements DCOP_INFO {
 		reorganizeRandomTable();
 		reorganizeConstaintTable();
 		//different from different algorithms
-		//initialize the tableMap		
+		//initialize the tableMap
+		
+		if (algorithm == LS_RAND)
+			for (int ts=0; ts<=h; ts++) {
+				addExpectedRandomTableToList(ts);
+				addConstraintTableToList(ts);
+			}
 		
 //		if (algorithm == C_DPOP) {
 //			addExpectedRandomTableToListAllTS();
