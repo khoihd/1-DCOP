@@ -181,7 +181,7 @@ public class DCOP extends Agent implements DCOP_INFO {
 		instanceD = Integer.valueOf(a[0]);
 		noAgent = Integer.valueOf(a[1]);
 		idStr = getLocalName();	
-		scType = DCOP.EXP_2;
+		scType = DCOP.QUAD;
 		
 		//can be done after getting the algorithm
 		if (algorithm == C_DPOP) {
@@ -1847,8 +1847,10 @@ public class DCOP extends Agent implements DCOP_INFO {
 			return equal ? 0 : switchingCost;
 		case LINEAR:
 			return equal ? 0 : difference * switchingCost;
+		case QUAD:
+			return equal ? 0 : Math.pow(difference * switchingCost, 2);
 		case EXP_2:
-			return equal ? 0 : Math.pow(2, switchingCost);
+			return equal ? 0 : Math.pow(2, difference * switchingCost);
 		}
 		
 		return -Double.MAX_VALUE;
