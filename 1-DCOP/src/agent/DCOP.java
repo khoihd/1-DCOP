@@ -181,7 +181,7 @@ public class DCOP extends Agent implements DCOP_INFO {
 		instanceD = Integer.valueOf(a[0]);
 		noAgent = Integer.valueOf(a[1]);
 		idStr = getLocalName();	
-		scType = DCOP.QUAD;
+		scType = DCOP.CONSTANT;
 		
 		//can be done after getting the algorithm
 		if (algorithm == C_DPOP) {
