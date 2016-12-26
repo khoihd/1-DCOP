@@ -30,6 +30,7 @@ public interface DCOP_INFO {
     public static final int LINEAR = 1;
     public static final int QUAD = 2;
     public static final int EXP_2 = 3;
+    public static final int EXP_3 = 4;
     
     public static final int stableTimeStep = 40;
     public static final int domainSize = 3;
